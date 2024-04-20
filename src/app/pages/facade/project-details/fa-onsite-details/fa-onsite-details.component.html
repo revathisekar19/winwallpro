@@ -1,0 +1,103 @@
+<div class="card mb-3" id="contactList">
+    <div class="card-header">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <h5 class="fs-14 mb-0">Projects Details</h5>
+            </div><!--end col-->
+            <div class="col-md-auto ms-auto">
+                <div class="d-flex gap-2">
+                    <div class="search-box">
+                        <input type="text"
+                            class="form-control form-control-sm form-control form-control-sm-sm bg-light border-light"
+                            placeholder="Search..." [(ngModel)]="searchTerm">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                    <button class="btn btn-danger btn-sm"><i class="ri-equalizer-line align-bottom mx-1"></i>
+                        Export</button>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body pb-0">
+        <div class="table-responsive table-card fs-12">
+            <table class="table align-middle table-nowrap" id="customerTable">
+                <thead class="table-light text-muted">
+                    <tr>
+                        <th class="freeze-column bg-light" style="width: 50px !important;" scope="col">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </th>
+                        <th class="sort" (click)="onSort('id')">S.No</th>
+                        <th class="sort" (click)="onSort('projectName')">Project Name</th>
+                        <th class="sort" (click)="onSort('companyName')">Company Name</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Specimen Type</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Specimen Arr Dt</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Chamber Handover Dt</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Installation Start Dt</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Chamber Closed Dt</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Pretest Dt</th>
+                    </tr><!--end tr-->
+                </thead>
+                <tbody class="list form-check-all">
+                    @for ( data of completedProjects; track $index;) {
+                    <tr>
+                        <td scope="row" style="width: 50px !important;">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox" (click)="$event.stopPropagation()">
+                            </div>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="($index + 1).toString()" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <a class="actions">
+                                <ngb-highlight [result]="data.projectName" [term]="searchTerm"></ngb-highlight>
+                            </a>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.companyName" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.typeOfSpecimen" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.testSpecimenArrival.receviedDate" [term]="searchTerm">
+                                {{data.testSpecimenArrival.receviedDate | date: 'dd MMM, yyyy'}}
+                            </ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.chamberHandover.handoverDate" [term]="searchTerm">
+                                {{data.chamberHandover.handoverDate| date: 'dd MMM, yyyy'}}
+                            </ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.installationStart.installationDate" [term]="searchTerm">
+                                {{data.installationStart.installationDate | date: 'dd MMM, yyyy'}}
+                            </ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.chamberClose.closeDate" [term]="searchTerm">
+                                {{data.chamberClose.closeDate | date: 'dd MMM, yyyy'}}
+                            </ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.preTest.preTestDate" [term]="searchTerm">
+                                {{data.preTest.preTestDate | date: 'dd MMM, yyyy'}}
+                            </ngb-highlight>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table><!--end table-->
+        </div>
+        <div class="d-flex justify-content-end mt-1
+        ">
+            <!-- Pagination -->
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="upComingPage" [pageSize]="5" size="sm"
+                (pageChange)="changeUpcomingPage()">
+            </ngb-pagination>
+            <!-- End Pagination -->
+        </div>
+    </div><!--end card-body-->
+</div>
