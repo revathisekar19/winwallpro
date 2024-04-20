@@ -1,0 +1,31 @@
+.checkbox {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+th,
+td {
+    height: 30px;
+    vertical-align: middle;
+}
+
+th {
+    padding: 10px 0px !important;
+}
+
+.table> :not(caption)>*>* {
+    padding: 0 !important;
+}
+
+.table .sort::before {
+    content: '' !important;
+    top: 8px !important;
+}
+
+.table .sort::after {
+    content: "\f0a64" !important;
+    top: 6px !important;
+    font-size: 0.75rem !important;
+}
