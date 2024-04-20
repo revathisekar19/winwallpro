@@ -1,0 +1,652 @@
+<div class="card mb-3" id="contactList">
+    <div class="card-header">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <h5 class="fs-12 mb-0">Upcoming Projects</h5>
+            </div><!--end col-->
+            <div class="col-md-auto ms-auto">
+                <div class="d-flex gap-2">
+                    <div class="search-box">
+                        <input type="text" class="form-control form-control-sm bg-light border-light"
+                            placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="performSearch()">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                    <button class="btn btn-success btn-sm" (click)="openPopupForm(createProject)"><i
+                            class="ri-plus-line align-bottom mx-1"></i> Add Project</button>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body pb-0">
+        <div class="table-responsive table-card fs-10">
+            <table class="table align-middle table-nowrap" id="customerTable">
+                <thead class="table-light text-muted">
+                    <tr>
+                        <th class="freeze-column bg-light" style="width: 50px !important;" scope="col">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </th>
+                        <th class="sort" (click)="onSort('id')">S.No</th>
+                        <th class="sort" (click)="onSort('projectName')">Project Name</th>
+                        <th class="sort" (click)="onSort('companyName')">Company Name</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Type</th>
+                        <th class="sort" (click)="onSort('ETA')">ETA</th>
+                        <th>Action</th>
+                    </tr><!--end tr-->
+                </thead>
+                <tbody class="list form-check-all">
+                    @for ( data of upcomingProjects; track $index;) {
+                    <tr>
+                        <td scope="row" style="width: 50px !important;">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox" (click)="$event.stopPropagation()">
+                            </div>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="($index + 1).toString()" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <a class="actions">
+                                <ngb-highlight [result]="data.projectName" [term]="searchTerm"></ngb-highlight>
+                            </a>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.companyName" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.typeOfSpecimen" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.ETA" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td data-column-id="actions">
+                            <span class="me-3">
+                                <a class="link-success fs-15 me-3" id="edit"
+                                    (click)="editProjectModal(editProject, data)">
+                                    <i class="ri-pencil-fill"></i>
+                                </a>
+                                <a class="link-danger fs-15">
+                                    <i class="ri-delete-bin-line"></i>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table><!--end table-->
+        </div>
+        <div class="d-flex justify-content-end mt-1
+        ">
+            <!-- Pagination -->
+            <ngb-pagination [collectionSize]="allUpcomingProjects.length" [(page)]="upComingPage" [pageSize]="5"
+                size="sm" (pageChange)="changeUpcomingPage()">
+            </ngb-pagination>
+            <!-- End Pagination -->
+        </div>
+    </div><!--end card-body-->
+</div>
+
+<div class="card mb-3" id="contactList">
+    <div class="card-header">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <h5 class="fs-12 mb-0">Ongoing Projects</h5>
+            </div><!--end col-->
+            <div class="col-md-auto ms-auto">
+                <div class="d-flex gap-2">
+                    <div class="search-box">
+                        <input type="text" name="searchTerm" class="form-control form-control-sm"
+                            placeholder="Search for transactions..." [(ngModel)]="searchTerm"
+                            (ngModelChange)="performSearch()">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body pb-0">
+        <div class="table-responsive table-card fs-10">
+            <table class="table align-middle table-nowrap" id="customerTable">
+                <thead class="table-light text-muted">
+                    <tr>
+                        <th class="freeze-column bg-light" style="width: 50px !important;" scope="col">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </th>
+                        <th class="sort" (click)="onSort('id')">S.No</th>
+                        <th class="sort" (click)="onSort('projectName')">Project Name</th>
+                        <th class="sort" (click)="onSort('companyName')">Company Name</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Type</th>
+                        <th class="sort" (click)="onSort('ETD')">ETD</th>
+                    </tr><!--end tr-->
+                </thead>
+                <tbody class="list form-check-all">
+                    @for ( data of ongoingProjects; track $index) {
+                    <tr>
+                        <td scope="row" style="width: 50px !important;">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox" (click)="$event.stopPropagation()">
+                            </div>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="($index + 1).toString()" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <a class="actions">
+                                <ngb-highlight [result]="data.projectName" [term]="searchTerm"></ngb-highlight>
+                            </a>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.companyName" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.typeOfSpecimen" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.ETD" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table><!--end table-->
+        </div>
+        <div class="d-flex justify-content-end mt-1">
+            <!-- Pagination -->
+            <ngb-pagination [collectionSize]="upcomingProjects.length" [(page)]="service.page"
+                [pageSize]="service.pageSize" (pageChange)="changePage()" size="sm">
+            </ngb-pagination>
+            <!-- End Pagination -->
+        </div>
+    </div><!--end card-body-->
+</div>
+
+<div class="card" id="contactList">
+    <div class="card-header">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <h5 class="fs-12 mb-0">Completed Projects</h5>
+            </div><!--end col-->
+            <div class="col-md-auto ms-auto">
+                <div class="d-flex gap-2">
+                    <div class="search-box">
+                        <input type="text" name="searchTerm" class="form-control form-control-sm"
+                            placeholder="Search for transactions..." [(ngModel)]="searchTerm"
+                            (ngModelChange)="performSearch()">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body pb-0">
+        <div class="table-responsive table-card fs-10">
+            <table class="table align-middle table-nowrap" id="customerTable">
+                <thead class="table-light text-muted">
+                    <tr>
+                        <th class="freeze-column bg-light" style="width: 50px !important;" scope="col">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </th>
+                        <th class="sort" (click)="onSort('id')">S.No</th>
+                        <th class="sort" (click)="onSort('projectName')">Project Name</th>
+                        <th class="sort" (click)="onSort('companyName')">Company Name</th>
+                        <th class="sort" (click)="onSort('typeOfSpecimen')">Type</th>
+                        <th class="sort" (click)="onSort('ETA')">ETA</th>
+                    </tr><!--end tr-->
+                </thead>
+                <tbody class="list form-check-all">
+                    @for ( data of completedProjects; track $index) {
+                    <tr>
+                        <td scope="row" style="width: 50px !important;">
+                            <div class="form-check text-center">
+                                <input class="form-check-input" type="checkbox" (click)="$event.stopPropagation()">
+                            </div>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="($index + 1).toString()" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <a class="actions">
+                                <ngb-highlight [result]="data.projectName" [term]="searchTerm"></ngb-highlight>
+                            </a>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.companyName" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.typeOfSpecimen" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                        <td>
+                            <ngb-highlight [result]="data.ETA" [term]="searchTerm"></ngb-highlight>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table><!--end table-->
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <!-- Pagination -->
+            <ngb-pagination [collectionSize]="upcomingProjects.length" [(page)]="service.page"
+                [pageSize]="service.pageSize" (pageChange)="changePage()" size="sm">
+            </ngb-pagination>
+            <!-- End Pagination -->
+        </div>
+    </div><!--end card-body-->
+</div>
+
+<ng-template #createProject let-modal>
+    <div class="modal-content border-0 overflow-hidden">
+        <div class="modal-header border-bottom p-3">
+            <h4 class="card-title mb-0">Create Project</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="inlabForm" #createForm>
+                <div class="mb-3">
+                    <label for="projectId" class="form-label">Project ID</label>
+                    <input type="text" class="form-control" id="projectId" placeholder="Enter project id"
+                        formControlName="projectId">
+                </div>
+                <div class="mb-3">
+                    <label for="projectName" class="form-label">Project Name</label>
+                    <input type="email" class="form-control" id="projectName" placeholder="Enter project name"
+                        formControlName="projectName">
+                </div>
+                <div class="mb-3">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="companyName" placeholder="Enter company name"
+                        formControlName="companyName">
+                </div>
+                <div class="mb-3">
+                    <label for="typeOfSpeciman" class="form-label">Type of Speciman</label>
+                    <select class="form-select text-muted mb-3" aria-label=".form-select-sm example"
+                        formControlName="typeOfSpecimen">
+                        <option selected>Select speciman</option>
+                        <option *ngFor="let spec of specimanType" [value]="spec">
+                            {{spec}}
+                        </option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label for="eta" class="form-label">Expected Date of Arrival</label>
+                    <input class="form-control flatpickr-input" id="eta" type="text" mwlFlatpickr [altInput]="true"
+                        [convertModelValue]="true" formControlName="ETA" [altInput]="true" [altFormat]="'d-m-Y'"
+                        [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="mb-3">
+                    <label for="typeOfSpeciman" class="form-label">Chamber</label>
+                    <select class="form-select text-muted mb-3" aria-label=".form-select-sm example"
+                        formControlName="chamberAllocation">
+                        <option selected>Select chamber</option>
+                        <option *ngFor="let chamber of availableChambers" [value]="chamber.chamberId">
+                            {{chamber.chamberId}}
+                        </option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="text-end ">
+                <button type="button" class="btn btn-danger me-3" (click)="modal.close('Close click')">Cancel</button>
+                <button type="button" class="btn btn-danger me-3" (click)="createForm.reset()">Reset</button>
+                <button type="submit" class="btn btn-info" (click)="createProj()">Create</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>
+
+<ng-template #editProject let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalgridLabel">Edit Project</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body border-top border-bottom">
+            <form [formGroup]="inLabEditForm">
+                <div class="row g-3">
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="isFieldVisible('projectName')">
+                        <div>
+                            <label for="project-name" class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="project-name" placeholder="Enter Project Name"
+                                formControlName="projectName" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="isFieldVisible('companyName')">
+                        <label for="project-name" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Enter Company Name"
+                            formControlName="companyName" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" *ngIf="isFieldVisible('typeOfSpeciman')">
+                    <div class="col-md-6 col-sm-12">
+                        <label for="choices-single-default" class="form-label">Type of Specimen</label>
+                        <select class="form-select text-muted mb-3" aria-label=".form-select-sm example"
+                            formControlName="typeOfSpecimen">
+                            <option selected>Select speciman</option>
+                            <option *ngFor="let spec of specimanType" [value]="spec">
+                                {{spec}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="enquiry" *ngIf="isFieldVisible('enquiry')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Enquiry Received
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="received" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    </div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                        <label for="project-name" class="form-label">Enquiry Remarks</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Enter remarks"
+                            formControlName="remarks" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" *ngIf="isFieldVisible('quotationSent')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Quotation sent
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="quotationSent" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="serviceRequestForm" *ngIf="isFieldVisible('srForm')">
+                    <div class="col-xxl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <div class="mt-4">
+                            <label for="requestform" class="form-label">Service Request Form</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex justify-content-between form-check-right mt-4" style="padding-left: 6px;">
+                            <input class="form-check-input" type="checkbox" id="requestForm" formControlName="sent" />
+                            <label class="form-check-label text-muted" for="requestForm">
+                                Sent
+                            </label>
+                            <input class="form-check-input" type="checkbox" id="requestForm"
+                                formControlName="received" />
+                            <label class="form-check-label text-muted" for="requestForm">
+                                Received
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="methodStatement" *ngIf="isFieldVisible('mos')">
+                    <div class="col-xxl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <div class="mt-4">
+                            <label for="requestform" class="form-label">Method of Statement</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex justify-content-between form-check-right mt-4" style="padding-left: 6px;">
+                            <input class="form-check-input" type="checkbox" id="requestForm" formControlName="sent" />
+                            <label class="form-check-label text-muted" for="requestForm">
+                                Sent
+                            </label>
+                            <input class="form-check-input" type="checkbox" id="requestForm"
+                                formControlName="approved" />
+                            <label class="form-check-label text-muted" for="requestForm">
+                                Approved
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                        <label for="project-name" class="form-label">MoS Remarks</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Enter remarks"
+                            formControlName="remarks" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="chamberPreparationStart"
+                    *ngIf="isFieldVisible('chamberPreparationStart')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Chamber Preparation Start
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="testSpecimenArrival" *ngIf="isFieldVisible('testSpecimenArrival')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Test Speciman Arrival
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="received" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="chamberHandover" *ngIf="isFieldVisible('chamberHandover')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Chamber Handover
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="installationStart" *ngIf="isFieldVisible('installationStart')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Installation Start
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="chamberClose" *ngIf="isFieldVisible('chamberClose')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Chamber Closed
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="closeDate" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="preTest" *ngIf="isFieldVisible('preTest')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Pre Test
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                        <label for="project-name" class="form-label">Pre Test Remarks</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Enter remarks"
+                            formControlName="remarks" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="finalTest" *ngIf="isFieldVisible('finalTest')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Final Test
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                        <label for="project-name" class="form-label">Final Test Remarks</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Enter remarks"
+                            formControlName="started" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="report" *ngIf="isFieldVisible('report')">
+                    <div class="col-xxl-12 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label" for="formCheck2">
+                                Report
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label text-muted" for="formCheck2">
+                                Under Production
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-1 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="underProduction" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label text-muted" for="formCheck2">
+                                Draft Sent
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-1 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="draftSent" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <label class="form-check-label text-muted" for="formCheck2">
+                                Approved
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-1 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-2">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="approved" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                        <label for="pretestRemarks" class="form-label">Report Remarks</label>
+                        <input type="text" class="form-control" id="pretestRemarks" placeholder="Enter Remarks"
+                            formControlName="remarks" />
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row g-3" formGroupName="paymentStatus" *ngIf="isFieldVisible('paymentStatus')">
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Payment Status
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-3 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="received" />
+                        </div>
+                    </div>
+                    <div class="col-xxl-2 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <label class="form-check-label" for="formCheck2">
+                                Date
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-sm-6 col-xs-6">
+                        <div class="form-check-right g-5 mt-4">
+                            <input class="form-check-input" type="checkbox" id="formCheck2"
+                                formControlName="receivedDate" />
+                        </div>
+                    </div>
+                </div>
+                <!--end row-->
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="col-xxl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal"
+                        (click)="modal.close('Close click')">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary" (click)="projectEditSubmit()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
