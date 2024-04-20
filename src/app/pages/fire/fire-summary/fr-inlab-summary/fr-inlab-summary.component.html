@@ -1,0 +1,448 @@
+<div class="card mb-3" id="contactList">
+    <div class="card-header">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3">
+                <h5 class="card-title mb-0">Project Summary</h5>
+            </div>
+        </div><!--end row-->
+    </div><!--end card-header-->
+    <div class="card-body">
+        <form [formGroup]="inLabEditForm">
+            <div class="row g-3 mb-2">
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="isFieldVisible('projectName')">
+                    <div>
+                        <label for="project-name" class="form-label">Project Name</label>
+                        <input type="text" class="form-control form-control-sm" id="project-name"
+                               placeholder="Enter Project Name" formControlName="projectName" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="isFieldVisible('companyName')">
+                    <label for="project-name" class="form-label">Company Name</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter Company Name" formControlName="companyName" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 *ngIf="isFieldVisible('typeOfSpeciman')">
+                <div class="col-md-6 col-sm-12">
+                    <label for="choices-single-default" class="form-label">Type of Specimen</label>
+                    <select class="form-select form-select-sm text-muted mb-3" aria-label=".form-select-sm example"
+                            formControlName="typeOfSpecimen">
+                        <option selected>Select speciman</option>
+                        <option *ngFor="let spec of specimanType" [value]="spec">
+                            {{spec}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="enquiry" *ngIf="isFieldVisible('enquiry')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Enquiry Received
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="received" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="col-md-12 mb-2 col-sm-6 col-xs-6">
+                    <label for="project-name" class="form-label">Enquiry Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 *ngIf="isFieldVisible('quotationSent')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Quotation sent
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2"
+                               formControlName="quotationSent" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="serviceRequestForm" *ngIf="isFieldVisible('srForm')">
+                <div class="col-xxl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                    <div class="mt-2">
+                        <label for="requestform" class="form-label">Service Request Form</label>
+                    </div>
+                </div>
+                <div class="col-lg-3 border border-top-0 border-dashed border-end-0 border-start-0">
+                    <div class="d-flex justify-content-between form-check-right mt-2" style="padding-left: 6px;">
+                        <input class="form-check-input" type="checkbox" id="requestForm" formControlName="sent" />
+                        <label class="form-check-label text-muted" for="requestForm">
+                            Sent
+                        </label>
+                        <input class="form-check-input" type="checkbox" id="requestForm" formControlName="received" />
+                        <label class="form-check-label text-muted" for="requestForm">
+                            Received
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="methodStatement" *ngIf="isFieldVisible('mos')">
+                <div class="col-xxl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                    <div class="mt-2">
+                        <label for="requestform" class="form-label">Method of Statement</label>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="d-flex justify-content-between form-check-right mt-2" style="padding-left: 6px;">
+                        <input class="form-check-input" type="checkbox" id="requestForm" formControlName="sent" />
+                        <label class="form-check-label text-muted" for="requestForm">
+                            Sent
+                        </label>
+                        <input class="form-check-input" type="checkbox" id="requestForm" formControlName="approved" />
+                        <label class="form-check-label text-muted" for="requestForm">
+                            Approved
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 mb-2 col-sm-6 col-xs-6 mt-2">
+                    <label for="project-name" class="form-label">Method of Statement Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+                <div class="col-xxl-6  mb-2 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="chamberPreparationStart" *ngIf="isFieldVisible('chamberPreparationStart')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Chamber Preparation Start
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6  mb-2 col-sm-6 col-xs-6 mt-2">
+                    <label for="project-name" class="form-label">Chamber Preparation Start Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="startDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="testSpecimenArrival" *ngIf="isFieldVisible('testSpecimenArrival')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Test Speciman Arrival
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="received" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Test Speciman Arrival Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="startDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="chamberHandover" *ngIf="isFieldVisible('chamberHandover')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Chamber Handover
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Chamber Handover Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="handoverDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="installationStart" *ngIf="isFieldVisible('installationStart')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Installation Start
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Installation Start Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="installationDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="chamberClose" *ngIf="isFieldVisible('chamberClose')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Chamber Closed
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Chamber Closed Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="closeDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2"></div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="preTest" *ngIf="isFieldVisible('preTest')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Pre Test
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Pre Test Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="preTestDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Pre Test Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="finalTest" *ngIf="isFieldVisible('finalTest')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Final Test
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="started" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Final Test Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="finalTestDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Final Test Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="report" *ngIf="isFieldVisible('report')">
+                <div class="col-xxl-12 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <label class="form-check-label" for="formCheck2">
+                            Report
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <label class="form-check-label text-muted" for="formCheck2">
+                            Under Production
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-1 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <input class="form-check-input" type="checkbox" id="formCheck2"
+                               formControlName="underProduction" />
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <label class="form-check-label text-muted" for="formCheck2">
+                            Draft Sent
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-1 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="draftSent" />
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <label class="form-check-label text-muted" for="formCheck2">
+                            Approved
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-1 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="approved" />
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-6 col-xs-6 mb-2">
+                    <label for="pretestRemarks" class="form-label">Report Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="pretestRemarks"
+                           placeholder="Enter Remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="paymentStatus" *ngIf="isFieldVisible('paymentStatus')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Payment Status
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-1 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="received" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Payment Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="receivedDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Payment Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="specimen" *ngIf="isFieldVisible('specimen')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Specimen Dispatch
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="dispatch" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Specimen Dispatch Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="dispatchDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Specimen Dispatch Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="dispatchRemarks" />
+                </div>
+            </div>
+            <!--end row-->
+            <div class="row g-3 mb-2 border border-top-0 border-dashed border-end-0 border-start-0"
+                 formGroupName="finalReport" *ngIf="isFieldVisible('finalReport')">
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <label class="form-check-label" for="formCheck2">
+                            Final Report
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6 col-xs-6">
+                    <div class="form-check-right g-5 mt-2">
+                        <input class="form-check-input" type="checkbox" id="formCheck2" formControlName="sent" />
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-sm-6 col-xs-6"></div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Final Report Date</label>
+                    <input class="form-control form-control-sm flatpickr-input" id="paymentDate" type="text"
+                           mwlFlatpickr [altInput]="true" [convertModelValue]="true" formControlName="sentDate"
+                           [altInput]="true" [altFormat]="'d-m-Y'" [dateFormat]="'d-m-Y'" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 mt-2 mb-2">
+                    <label for="project-name" class="form-label">Final Report Remarks</label>
+                    <input type="text" class="form-control form-control-sm" id="company-name"
+                           placeholder="Enter remarks" formControlName="remarks" />
+                </div>
+            </div>
+            <!--end row-->
+        </form>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@import url('../../../../_custom-tables.scss');
+
+.card-header {
+  padding: 0.5rem 1rem;
+}
+
+.modal-header {
+  padding: 0.75rem 1.25rem;
+}
+
+.modal-footer {
+  padding: 0.5rem 1.25rem;
+}
+
+.available-color {
+  background-color: #36712C;
+}
+
+.occupied-color {
+  background-color: #95312B;
+}
+
+.upcoming-color {
+  background-color: #EF8A15;
+}
+
+
+#chamber-title {
+  text-align: center;
+}
+
+.container {
+  display: inline-block;
+  // border: 5px solid black;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 42px);
+  grid-template-rows: repeat(2, 38px);
+  grid-gap: 0;
+}
+
+.three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 42px);
+  grid-template-rows: repeat(3, 38px);
+  grid-gap: 0;
+}
+
+.cell {
+  /* center the cell content */
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid black;
+}
