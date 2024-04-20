@@ -1,0 +1,155 @@
+<!-- Start Breadcrumbs -->
+<app-breadcrumbs title="Notice Board" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<!-- End Breadcrumbs -->
+
+<div class="row">
+    <div class="col">
+        <div class="h-100">
+
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="card overflow-hidden">
+                        <div class="card-body bg-marketplace d-flex justify-content-center">
+                            <div class="flex-grow-1 mt-4">
+                                <h4 class="fs-14 lh-base mb-0">Welcome to <span class="text-success">LIMS.</span> </h4>
+                                <p class="mb-0 pt-1 text-muted">Organize your work and Empower your lab!</p>
+                            </div>
+                            <img src="assets/images/image.png" alt="" style="height: 100px;width: 150px;" />
+                        </div>
+                    </div>
+
+                    @for(event of allEvents | keyvalue;track event.key) {
+                    <div class="d-flex justify-content-center mb-2">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-14 lh-base mb-0">
+                                <span class="text-capitalize">{{ event.key }}</span> Notice Board
+                            </h4>
+                            <p class="mb-0 fs-12 text-muted">Don't miss scheduled events</p>
+                        </div>
+                    </div>
+                    @for(el of event.value;track el.SK) {
+                    <div class="card ribbon-box">
+                        <div class="card-body">
+
+                            <div class="d-flex mb-1">
+                                <div class="flex-grow-1">
+                                    <p class="text-truncate fs-12 mb-0">
+                                        <i class="mdi mdi-circle lh-base align-middle text-primary me-2"></i>
+                                        &nbsp;{{el.createdAt | date: 'dd MMM yyyy'}}
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <span class="badge bg-primary">
+                                        {{el.createdByFirstName}}&nbsp;{{el.createdByLastName}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-1">
+                                <div class="flex-grow-1">
+                                    <p class="text-truncate lh-base fs-12 mb-0">
+                                        {{el.eventTitle}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+
+                </div><!-- end col -->
+
+                <div class="col-xl-6">
+                    <!-- card -->
+                    <div class="card">
+                        <div class="d-flex flex-column align-items-center  pt-4 justify-content-center">
+                            <div class="card w-75 overflow-hidden shadow-none">
+                                <div class="card-body bg-info-subtle">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar-sm">
+                                                <div
+                                                    class="avatar-title bg-info bg-opacity-10 text-info rounded-circle fs-17">
+                                                    <i class="las la-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-14">Welcome to your Notice board!</h6>
+                                            <p class="text-muted mb-0 fs-10">
+                                                Event that applications book will appear here. Click on an event to see
+                                                the
+                                                details and manage applications event.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <img src="assets/images/notice.svg" class="card-img" />
+                            </div>
+                        </div>
+
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+
+                    <!-- card -->
+                    <div class="card" *ngIf="userData['custom:accessLevel'] === '1'">
+                        <div class="card-body">
+                            <p class="fs-12 text-muted">Create Your Notice for the Community!</p>
+                            <form [formGroup]="eventForm" (ngSubmit)="saveNotice()">
+                                <div class="row g-3">
+                                    <div class="col-xxl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label for="title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" placeholder="Enter title"
+                                            formControlName="eventTitle" />
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label for="expiry" class="form-label">Expiry Date</label>
+                                        <input class="form-control flatpickr-input" type="text" mwlFlatpickr
+                                            [altInput]="false" [convertModelValue]="false" formControlName="eventExpiry"
+                                            [dateFormat]="'Y/M/d'" />
+                                    </div>
+                                    <!--end col-->
+                                    <div class="col-xxl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                        <label for="choices-single-default" class="form-label">Access</label>
+                                        <ng-select [items]="eventAccessList" bindLabel="name"
+                                            formControlName="eventAccess">
+                                            <ng-template ng-optgroup-tmp let-item="item">
+                                                {{ item.country || "Unnamed group" }}
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-xxl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <label for="content" class="form-label">Content</label>
+                                        <textarea class="form-control" id="content" rows="3"
+                                            formControlName="eventContent"></textarea>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-xxl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="hstack gap-2 justify-content-center">
+                                            <button type="submit" class="btn btn-primary">Create New Notice</button>
+                                        </div>
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+
+        </div> <!-- end .h-100-->
+
+    </div> <!-- end col -->
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
