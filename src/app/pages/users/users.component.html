@@ -1,0 +1,311 @@
+<app-breadcrumbs title="Users List" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="usersList">
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="fs-14 mb-0 flex-grow-1">All Users</h5>
+                    <div class="flex-shrink-0 d-flex flex-wrap gap-2 hstack">
+                        <form>
+                            <div class="search-box">
+                                <input type="text" class="form-control form-control-sm bg-light border-light"
+                                    placeholder="Search here..." name="search" [(ngModel)]="searchText">
+                                <i class="ri-search-2-line search-icon"></i>
+                            </div>
+                        </form>
+                        <button class="btn btn-sm btn-success add-btn" (click)="open(content)">
+                            <i class="ri-add-line align-bottom me-1"></i> Create User
+                        </button>
+                        <span *ngIf="selection.selected.length > 0">
+                            <button class="btn btn-sm btn-soft-danger" (click)="  open(deleteModel)">
+                                <i class="ri-delete-bin-2-line"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table-card mb-2" style="height: 300px;">
+                    <table class="table" id="usersList-table">
+                        <thead>
+                            <tr class="bg-light text-muted">
+                                <th scope="col" class="checkbox" style="min-width: 45px !important;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" [checked]="allSelected"
+                                            [indeterminate]="selection.selected.length !== 0 && !allSelected"
+                                            (change)="toggleMasterSelection()" type="checkbox">
+                                    </div>
+                                </th>
+                                <th><span class="pl-2">User Name</span></th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Phone</th>
+                                <th>Joining Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let user of users | search: searchText" scope="row">
+                                <td class="checkbox" style="min-width: 45px !important;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" [checked]="selection.isSelected(user)"
+                                            (change)="selection.toggle(user)" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="me-2">{{user.firstName}}&nbsp;{{user.lastName}}</span>
+                                </td>
+                                <td>{{user.emailId}}</td>
+                                <td>{{user.userRole}}</td>
+                                <td>{{user.mobile}}</td>
+                                <td>{{user.createdDate | date: 'dd MMM, yyyy' }}</td>
+                                <td>
+                                    <span class="py-1 px-2 fs-10 rounded" [ngClass]="{
+                                        'bg-success-subtle text-success': user.isActive,
+                                        'bg-danger-subtle text-danger': !user.isActive
+                                    }">{{user.isActive ? 'Active' : 'Inactive'}}</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-soft-success me-1" (click)="editUser(content, user)">
+                                        <i class="ri-pencil-line align-bottom me-1"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-soft-danger me-1" (click)="deleteUser(deleteModel, user)">
+                                        <i class="ri-delete-bin-line align-bottom me-1"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-soft-primary"
+                                        (click)="changePassword(passwordModel, user)">
+                                        <i class="las la-key align-bottom me-1"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-md-between align-items-md-center">
+                    <div class="col col-sm-12">
+                        <div class="text-sm-right float-sm-end listjs-pagination">
+                            <ngb-pagination [collectionSize]="totalElements" [(page)]="service.page"
+                                [pageSize]="service.pageSize" (pageChange)="changePage()" [rotate]="true"
+                                [ellipses]="false" [boundaryLinks]="true">
+                            </ngb-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<ng-template #content let-modal>
+    <div class="modal-header border-bottom ">
+        <h4 *ngIf="createMode" class="modal-title" id="modal-basic-title">Create User</h4>
+        <h4 *ngIf="!createMode" class="modal-title" id="modal-basic-title">Edit User</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="usersForm" autocomplete="off" #f>
+            <div class="row">
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="userId">User ID</label>
+                    <input type="text" formControlName="userId" class="form-control" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('userId')">*Enter UserID</div>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="userName">User Name</label>
+                    <input type="text" formControlName="userName" class="form-control" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('userName')">*Enter UserName
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="email">Email</label>
+                    <input type="text" formControlName="email" class="form-control" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('email')">*Enter Email</div>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="mobile">Phone</label>
+                    <input type="number" formControlName="mobile" class="form-control" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('mobile')">*Enter Phone Number</div>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="role">Role</label>
+                    <ng-select appearance="outline" [searchable]="false" [clearable]="false" formControlName="role">
+                        <ng-option *ngFor="let val of roles" [value]="val.value">
+                            <a class="dropdown-item d-flex align-items-center">
+                                <div class="flex-grow-1">{{val.label}}</div>
+                            </a>
+                        </ng-option>
+                    </ng-select>
+
+                    <div class="mb-2 text-danger" *ngIf="getErrors('role')">
+                        Select a Role
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label class="label-valid" for="validityYn">Validity YN</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="validityYnCheck"
+                            (change)="validityChange($event)">
+                    </div>
+                </div>
+                <div *ngIf="usersForm.get('validityYnCheck')?.value" class="form-group col-lg-6 ">
+                    <label for="validTill">Valid Till</label>
+                    <div class="input-group">
+                        <input class="form-control tableSelect flatpickr-input active" type="text" mwlFlatpickr
+                            [dateFormat]="'Y-m-d'" [altFormat]="'d M Y'" [altInput]="true" id="isDate"
+                            formControlName="validTill">
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="externalType">External Type</label>
+                    <select class="form-control" formControlName="externalType">
+                        <option *ngFor="let val of externalType" [value]="val">{{val}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="externalName">External Name</label>
+                    <input type="text" formControlName="externalName" class="form-control" autocomplete="off">
+                </div>
+                <div class="form-group col-lg-6 mb-3">
+                    <label for="activeStatus">Status</label>
+                    <select class="form-control" formControlName="activeStatus">
+                        <option value="Y">Active</option>
+                        <option value="N">InActive</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-6 mb-3" *ngIf="createMode">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" autocomplete="off" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('password')"> *Enter Password </div>
+                </div>
+                <div class="form-group col-lg-6 mb-3" *ngIf="createMode">
+                    <label for="password">Confirm Password</label>
+                    <input type="password" formControlName="passwordConfirm" class="form-control" required>
+                    <div class="mb-2 text-danger" *ngIf="getErrors('passwordConfirm')"> Password do not match </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Close</button>
+                <button *ngIf="createMode" class="btn btn-soft-danger " (click)="f.reset()">Reset</button>
+                <button *ngIf="createMode" type="submit" class="btn btn-success add-btn" (click)="submit()">Add
+                    User</button>
+                <button *ngIf="!createMode" type="submit" class="btn btn-success add-btn" (click)="submit()">Update
+                    User</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- removeItemModal -->
+<ng-template #deleteModel let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"
+                (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2 text-center">
+                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                    colors="primary:#405189,secondary:#f06548" style="width:90px;height:90px"></lord-icon>
+                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                    <h4>You are about to delete a user ?</h4>
+                    <p class="text-muted mx-4 mb-0">Deleting your user details will remove all of your information from
+                        our
+                        database.</p>
+                </div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                <button class="btn btn-link btn-ghost-success fw-medium text-decoration-none" id="deleteRecord-close"
+                    data-bs-dismiss="modal" (click)="modal.close('Close click')"><i
+                        class="ri-close-line me-1 align-middle"></i> Close</button>
+                <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteMultipleUser()"
+                    (click)="modal.close('Close click')">Yes, Delete It!</button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</ng-template>
+
+<!-- Change Password -->
+<ng-template #passwordModel let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Change Password</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2">
+                <form [formGroup]="passresetForm" #pf>
+                    <div class="mb-3">
+                        <label class="form-label" for="password-input">Password</label>
+                        <div class="position-relative auth-pass-inputgroup">
+                            <input [type]="passwordField ? 'text' : 'password'" class="form-control pe-5 password-input"
+                                placeholder="Enter password" id="password-input" aria-describedby="passwordInput"
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required formControlName="password"
+                                [ngClass]="{ 'is-invalid': resetSubmitted && pf['password'].errors }">
+                            <button
+                                class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                type="button" id="password-addon"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                            }" (click)="togglepasswordField()"></i></button>
+                            @if (resetSubmitted && pf['password'].errors) {
+                            <div class="invalid-feedback">
+                                @if(pf['password'].errors['required']){
+                                <span>Password is
+                                    required</span>
+                                }
+                            </div>
+                            }
+                        </div>
+                        <div id="passwordInput" class="form-text">Must be at least 8 characters.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="confirm-password-input">Confirm Password</label>
+                        <div class="position-relative auth-pass-inputgroup mb-3">
+                            <input [type]="confirmField ? 'text' : 'password'" class="form-control pe-5 password-input"
+                                placeholder="Confirm password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                id="confirm-password-input" required formControlName="cpassword"
+                                [ngClass]="{ 'is-invalid': resetSubmitted && pf['cpassword'].errors }">
+                            <button
+                                class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle" [ngClass]="{'mdi-eye-off-outline': !passwordField, 'mdi-eye-outline': passwordField
+                            }" (click)="toggleconfirmField()"></i></button>
+                            @if (resetSubmitted && pf['cpassword'].errors) {
+                            <div class="invalid-feedback">
+                                @if(pf['cpassword'].errors['required']){
+                                <span>Confirm Password is
+                                    required</span>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light mb-2 rounded" class="invalid-feedback">
+                        @if(passresetForm.hasError('mismatch')){
+                        <span>Password must watch</span>
+                        }
+                    </div>
+
+                    <div id="password-contain" class="p-3 bg-light mb-2 rounded">
+                        <h5 class="fs-13">Password must contain:</h5>
+                        <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
+                        <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b> letter (a-z)
+                        </p>
+                        <p id="pass-upper" class="invalid fs-12 mb-2">At least <b>uppercase</b> letter
+                            (A-Z)</p>
+                        <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <button class="btn btn-success w-100" type="submit" (click)="onChangePassword()">Reset
+                            Password</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
